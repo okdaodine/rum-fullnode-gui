@@ -3,6 +3,8 @@ import { toJS } from 'mobx';
 import { useLocalStore } from 'mobx-react-lite';
 import { createSnackbarStore } from './snackbar';
 import { createConfirmDialogStore } from './confirmDialog';
+import { createApiConfigStore } from './apiConfig';
+import { createPageLoadingStore } from './pageLoadingStore';
 
 const storeContext = React.createContext<any>(null);
 
@@ -13,6 +15,8 @@ interface IProps {
 const useCreateStore = () => ({
   snackbarStore: useLocalStore(createSnackbarStore),
   confirmDialogStore: useLocalStore(createConfirmDialogStore),
+  apiConfigStore: useLocalStore(createApiConfigStore),
+  pageLoadingStore: useLocalStore(createPageLoadingStore),
 });
 
 export const StoreProvider = ({ children }: IProps) => {

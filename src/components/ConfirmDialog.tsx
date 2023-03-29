@@ -1,12 +1,5 @@
-import React from 'react';
 import { observer } from 'mobx-react-lite';
-import {
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  DialogTitle,
-} from '@material-ui/core';
+import Modal from 'components/Modal';
 import Button from 'components/Button';
 import { useStore } from 'store';
 
@@ -18,66 +11,57 @@ export default observer(() => {
     cancel,
     content,
     cancelText,
-    cancelDisabled,
-    okText = '确定',
+    cancelDisabled = false,
+    okText = 'Ok',
     contentClassName,
     loading,
   } = confirmDialogStore;
 
   return (
-    <Dialog
-      transitionDuration={{
-        appear: 500,
-        enter: 300,
-        exit: 500,
-      }}
+    <Modal
+      hideCloseButton
+      useDialog
       open={open}
       onClose={() => {
         if (!cancel) {
           confirmDialogStore.hide();
         }
       }}
-      className="flex justify-center items-center"
     >
-      <DialogTitle>
-        <span className="block pt-6 px-1" />
-      </DialogTitle>
-      <DialogContent>
-        <span className="block px-4 text-center">
-          <DialogContentText>
-            <span
-              style={{
-                maxWidth: 250,
-              }}
-              className={`block text-gray-600 leading-7 ${contentClassName}`}
-            >
-              <span className="block" dangerouslySetInnerHTML={{ __html: content }}></span>
-            </span>
-          </DialogContentText>
-        </span>
-      </DialogContent>
-      <DialogActions>
-        <span className="flex pt-3 pb-2 px-6 items-center justify-end w-64">
-          {!cancelDisabled && (
-            <span
-              className="block text-blue-400 mr-6 pr-1 cursor-pointer"
-              onClick={() => {
-                if (cancel) {
-                  cancel();
-                } else {
-                  confirmDialogStore.hide();
-                }
-              }}
-            >
-              {cancelText}
-            </span>
-          )}
-          <Button onClick={() => ok()} isDoing={loading}>
-            {okText}
-          </Button>
-        </span>
-      </DialogActions>
-      <span className="block pb-2" />
-    </Dialog>
+      <div className="min-w-[70vw] md:min-w-[auto]">
+        <div className="pt-8 md:pt-10 pb-6 md:pb-8 px-8 md:px-12">
+          <div className="flex items-center justify-center md:min-h-[60px]">
+            <div
+              className={`dark:text-white dark:text-opacity-80 text-neutral-500 leading-7 ${contentClassName} md:min-w-[160px] md:max-w-[250px] text-center text-16`}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          </div>
+          <div className="flex mt-[26px] items-center justify-center w-full">
+            {!cancelDisabled && (
+              <Button
+                size="large"
+                className="w-[110px] mr-5 opacity-70"
+                outline
+                onClick={() => {
+                  if (cancel) {
+                    cancel();
+                  } else {
+                    confirmDialogStore.hide();
+                  }
+                }}>
+                {cancelText}
+              </Button>
+            )}
+            <Button
+              size="large"
+              className={`${cancelDisabled ? 'w-[150px]' : 'w-[110px]'}`}
+              onClick={() => ok()}
+              isDoing={loading}>
+              {okText}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Modal>
   );
 });
