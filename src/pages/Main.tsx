@@ -1,6 +1,5 @@
 import { observer, useLocalObservable } from 'mobx-react-lite';
 import Button from 'components/Button';
-import { GoChevronRight } from 'react-icons/go';
 import { IGroup } from 'rum-fullnode-sdk/src/apis/group';
 import { useStore } from 'store';
 import RumFullNodeClient from 'rum-fullnode-sdk';
