@@ -6,6 +6,7 @@ import Loading from 'components/Loading';
 import { useStore } from 'store';
 import Modal from 'components/Modal';
 import { IGroup } from 'rum-fullnode-sdk/src/apis/group';
+import RumFullNodeClient from 'rum-fullnode-sdk';
 
 interface IModalProps {
   group: IGroup
@@ -13,10 +14,10 @@ interface IModalProps {
 }
 
 const Main = observer((props: IModalProps) => {
-  const { snackbarStore } = useStore();
+  const { snackbarStore, apiConfigStore } = useStore();
   const state = useLocalObservable(() => ({
     group: {} as IGroup,
-    loading: false,
+    loading: true,
     open: false,
   }));
 
@@ -29,10 +30,9 @@ const Main = observer((props: IModalProps) => {
   React.useEffect(() => {
     (async () => {
       try {
-        // const group = await GroupApi.get(props.groupId);
-        // state.group = group;
-        // console.log(`[]:`, { group });
-        state.group = props.group;
+        const client = RumFullNodeClient(apiConfigStore.apiConfig!);
+        const group = await client.Group.get(props.group.group_id);
+        state.group = group;
       } catch (err) {
         console.log(err);
         snackbarStore.show({
@@ -54,7 +54,7 @@ const Main = observer((props: IModalProps) => {
       <div className="h-[90vh] overflow-y-auto  p-8 px-5 md:px-10 box-border">
         <div className="w-full md:w-[540px]">
           {state.loading && (
-            <div className="py-32">
+            <div className="py-56">
               <Loading />
             </div>
           )}

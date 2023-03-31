@@ -1,44 +1,54 @@
-import React from 'react';
 import { observer, useLocalObservable } from 'mobx-react-lite';
 import Modal from 'components/Modal';
 import { TextField } from '@material-ui/core';
 import Button from 'components/Button';
 import RumFullNodeClient  from 'rum-fullnode-sdk';
-import { IGroup } from 'rum-fullnode-sdk/src/apis/group';
 import { useStore } from 'store';
 import sleep from 'utils/sleep';
 
 interface IProps {
+  groupId: string
   open: boolean
   onClose: () => void
-  addGroup: (group: IGroup) => void
 }
 
 const Main = observer((props: IProps) => {
-  const { snackbarStore, apiConfigStore } = useStore();
+  const { snackbarStore, apiConfigStore, confirmDialogStore } = useStore();
   const state = useLocalObservable(() => ({
-    seedUrl: '',
+    data: '',
     submitting: false
   }));
  
   const submit = async () => {
+    let json: any;
+    try {
+      json = JSON.parse(state.data);
+    } catch (err) {
+      console.log(err);
+      snackbarStore.show({
+        message: 'Invalid json string',
+        type: 'error',
+      });
+      return;
+    }
     if (state.submitting) {
       return;
     }
     state.submitting = true;
     try {
       const client = RumFullNodeClient(apiConfigStore.apiConfig!);
-      const groupRes = await client.Group.join(state.seedUrl);
-      const group = await client.Group.get(groupRes.group_id);
+      const res = await client.Content.create(props.groupId, json);
+      console.log(res);
       await sleep(400);
       state.submitting = false;
-      await sleep(400);
       props.onClose();
       await sleep(400);
-      props.addGroup(group);
-      await sleep(400);
-      snackbarStore.show({
-        message: 'Done',
+      confirmDialogStore.show({
+        content: `Done. Trx id 👇 <br /><span class="text-12 opacity-60 whitespace-nowrap">${res.trx_id}</span>`,
+        cancelDisabled: true,
+        ok: () => {
+          confirmDialogStore.hide();
+        },
       });
     } catch (err) {
       console.log(err);
@@ -52,25 +62,18 @@ const Main = observer((props: IProps) => {
 
   return (
     <div className="bg-white dark:bg-[#181818] py-8 px-10 w-[350px] box-border">
-      <div className="text-18 font-bold dark:text-white dark:text-opacity-80 text-gray-700 text-center">Join Group</div>
+      <div className="text-18 font-bold dark:text-white dark:text-opacity-80 text-gray-700 text-center">Create Trx</div>
       <div className="pt-4 relative">
         <TextField
           className="w-full"
-          placeholder="Seed URL"
+          placeholder={`Trx data. For example { "foo": "bar" }`}
           size="small"
           multiline
           minRows={6}
           maxRows={6}
-          value={state.seedUrl}
+          value={state.data}
           autoFocus
-          onChange={(e) => { state.seedUrl = e.target.value.trim() }}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              (e.target as HTMLInputElement).blur();
-              submit();
-            }
-          }}
+          onChange={(e) => { state.data = e.target.value.trim() }}
           margin="dense"
           variant="outlined"
         />
@@ -78,10 +81,10 @@ const Main = observer((props: IProps) => {
           <Button
             fullWidth
             isDoing={state.submitting}
-            disabled={!state.seedUrl}
+            disabled={!state.data}
             onClick={submit}
           >
-            Ok
+            Create
           </Button>
         </div>
       </div>

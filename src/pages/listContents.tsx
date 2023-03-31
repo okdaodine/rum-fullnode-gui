@@ -5,17 +5,19 @@ import { StoreProvider } from 'store';
 import Loading from 'components/Loading';
 import { useStore } from 'store';
 import Modal from 'components/Modal';
-import { INetwork } from 'rum-fullnode-sdk/src/apis/network';
+import { IGroup } from 'rum-fullnode-sdk/src/apis/group';
+import { IContentItem } from 'rum-fullnode-sdk/src/apis/content';
 import RumFullNodeClient from 'rum-fullnode-sdk';
 
 interface IModalProps {
+  group: IGroup
   rs: (result: boolean) => void
 }
 
 const Main = observer((props: IModalProps) => {
   const { snackbarStore, apiConfigStore } = useStore();
   const state = useLocalObservable(() => ({
-    network: {} as INetwork,
+    contents: [] as IContentItem[],
     loading: true,
     open: false,
   }));
@@ -30,8 +32,11 @@ const Main = observer((props: IModalProps) => {
     (async () => {
       try {
         const client = RumFullNodeClient(apiConfigStore.apiConfig!);
-        const network = await client.Network.get();
-        state.network = network;
+        const contents = await client.Content.list(props.group.group_id, {
+          num: 10,
+          reverse: true
+        });
+        state.contents = contents || [];
       } catch (err) {
         console.log(err);
         snackbarStore.show({
@@ -59,9 +64,9 @@ const Main = observer((props: IModalProps) => {
           )}
           {!state.loading && (
             <>
-              <div className="text-18 font-bold text-center pb-10 leading-none">Network</div>
+              <div className="text-18 font-bold text-center pb-10 leading-none">Last 10 trxs</div>
               <div className="-mt-3 justify-center bg-gray-100 dark:bg-black dark:bg-opacity-70 rounded-0 pt-3 px-4 md:px-6 pb-3 leading-7 tracking-wide text-left overflow-auto text-12">
-                <pre dangerouslySetInnerHTML={{ __html: JSON.stringify(state.network, null, 2) }} />
+                <pre dangerouslySetInnerHTML={{ __html: JSON.stringify(state.contents, null, 2) }} />
               </div>
             </>
           )}
@@ -71,7 +76,7 @@ const Main = observer((props: IModalProps) => {
   )
 });
 
-export default async () => new Promise((rs) => {
+export default async (group: IGroup) => new Promise((rs) => {
   const div = document.createElement('div');
   document.body.append(div);
   const unmount = () => {
@@ -82,6 +87,7 @@ export default async () => new Promise((rs) => {
     (
       <StoreProvider>
         <Main
+          group={group}
           rs={(result: any) => {
             rs(result);
             setTimeout(unmount, 500);

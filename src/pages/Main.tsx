@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite';
+import { observer, useLocalObservable } from 'mobx-react-lite';
 import Button from 'components/Button';
 import { GoChevronRight } from 'react-icons/go';
 import { IGroup } from 'rum-fullnode-sdk/src/apis/group';
@@ -7,6 +7,8 @@ import RumFullNodeClient from 'rum-fullnode-sdk';
 import copy from 'copy-to-clipboard';
 import sleep from 'utils/sleep';
 import openGroupInfo from './openGroupInfo';
+import listContents from './listContents';
+import CreateTrxModal from './CreateTrxModal';
 
 interface IProps {
   group: null | IGroup,
@@ -15,6 +17,9 @@ interface IProps {
 
 export default observer((props: IProps) => {
   const { apiConfigStore, snackbarStore, confirmDialogStore } = useStore();
+  const state = useLocalObservable(() => ({
+    openCreateTrxModal: false
+  }));
   
   if (!props.group) {
     return null;
@@ -108,23 +113,33 @@ export default observer((props: IProps) => {
       <div className="mt-[62px] pt-5">
         <div className="flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => openGroupInfo(props.group!)}>
           <div className="text-14 tracking-wider">Group Info</div>
-          <GoChevronRight className="text-20 opacity-70" />
-        </div>
-        <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => openGroupInfo(props.group!)}>
-          <div className="text-14 tracking-wider">Network</div>
-          <GoChevronRight className="text-20 opacity-70" />
+          <div className="text-orange-500/90 mr-1">Open</div>
         </div>
         <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={copySeed}>
           <div className="text-14 tracking-wider">Seed URL</div>
           <div className="text-orange-500/90 mr-1">Copy</div>
         </div>
+        <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => { state.openCreateTrxModal = true; }}>
+          <div className="text-14 tracking-wider">Trx</div>
+          <div className="text-orange-500/90 mr-1">Create</div>
+        </div>
+        <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => { listContents(props.group!) }}>
+          <div className="text-14 tracking-wider">Last 10 trxs</div>
+          <div className="text-orange-500/90 mr-1">List</div>
+        </div>
         {isOwner && (
-          <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => createNodeToken()}>
+          <div className="mt-5 w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90 hidden" onClick={() => createNodeToken()}>
             <div className="text-14 tracking-wider">Node Token</div>
             <div className="text-orange-500/90 mr-1">Create</div>
           </div>
         )}
       </div>
+
+      <CreateTrxModal
+        groupId={props.group.group_id}
+        open={state.openCreateTrxModal}
+        onClose={() => state.openCreateTrxModal = false}
+      />
     </div>
   )
 });

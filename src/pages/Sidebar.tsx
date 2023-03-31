@@ -36,7 +36,7 @@ export default observer((props: IProps) => {
         {props.groups.map(group => (
           <div
             key={group.group_id}
-            className={classNames("py-2 px-4 border-b border-white/10 cursor-pointer hover:bg-white/5", {
+            className={classNames("py-2 px-4 border-b border-white/10 cursor-pointer hover:bg-white/5 truncate", {
               'bg-white/5': group.group_id === props.activeGroup?.group_id
             })}
             onClick={() => {

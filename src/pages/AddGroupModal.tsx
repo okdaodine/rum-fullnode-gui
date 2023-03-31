@@ -39,7 +39,7 @@ const Main = observer((props: IProps) => {
         encryption_type: state.encryptionType || 'public',
         app_key: state.appKey || 'group_timeline',
       });
-      const group = ((await client.Group.list()).groups || []).find(item => item.group_id === groupRes.group_id)!;
+      const group = await client.Group.get(groupRes.group_id);
       await sleep(400);
       state.submitted = true;
       await sleep(400);

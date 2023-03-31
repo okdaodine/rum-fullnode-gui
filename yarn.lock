@@ -7918,10 +7918,10 @@ rollup@^2.43.1:
   optionalDependencies:
     fsevents "~2.3.2"
 
-rum-fullnode-sdk@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/rum-fullnode-sdk/-/rum-fullnode-sdk-1.0.2.tgz#45b71ea66abb6c67fe18aedf15f9efacd3741992"
-  integrity sha512-Xg3+ctwXnvnmGS+1z3X7rtrAKI1Q0svr9Q6bsJ5o5mQkyrOR08IumnycuAbbYQqo5OJJYderwjP6Bhl6uLgKAw==
+rum-fullnode-sdk@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/rum-fullnode-sdk/-/rum-fullnode-sdk-2.0.4.tgz#0090318da4be100b599e838597e88ffd636ae519"
+  integrity sha512-RPwwdq+XKot5ukNW7/RGSNRNXnkDpdT1TOYxDEPAog/RN7X0mUyrzq45ezfraSMK53kn1VC+Z6ApdqBDhGuMAQ==
   dependencies:
     axios "^0.27.2"
     chai "^4.3.7"

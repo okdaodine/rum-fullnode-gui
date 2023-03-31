@@ -11,6 +11,7 @@ import LoginModal from './LoginModal';
 import { IGroup } from 'rum-fullnode-sdk/dist/apis/group';
 import RumFullNodeClient from 'rum-fullnode-sdk';
 import openNetwork from './openNetwork';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 export default observer(() => {
   const { apiConfigStore, confirmDialogStore, pageLoadingStore } = useStore();
@@ -29,8 +30,6 @@ export default observer(() => {
         if (apiConfigStore.apiConfig) {
           const client = RumFullNodeClient(apiConfigStore.apiConfig);
           state.groups = (await client.Group.list()).groups || [];
-        } else {
-          state.openLoginModal = true;
         }
         state.loading = false;
       } catch (err) {
@@ -79,6 +78,26 @@ export default observer(() => {
 
   return (
     <div className="w-[1000px] h-screen mx-auto flex items-stretch py-8 text-white/80">
+      {!apiConfigStore.apiConfig && (
+        <div className="text-[28px] w-[1000px] mx-auto pt-20 text-white/80 ">
+          <img src="/dashboard.fullnode.png" alt="logo" className="w-[100px] h-[100px] rounded-full mx-auto opacity-80" />
+          <div className="text-[50px] font-extrabold text-orange-400 text-center leading-tight pt-8 tracking-wider">
+            Pure<span className="opacity-60">,</span> Quick<span className="opacity-60">,</span> Secure <br /><span className="mt-5 text-[32px] opacity-80">GUI for quorum fullnode.</span>
+          </div>
+      
+          <div className="py-3 px-4 rounded-xl opacity-50 mt-5 text-14 flex items-center leading-none justify-center">
+            <AiOutlineInfoCircle className="mr-2 text-18" />This GUI that will not store any of your fullnode data.
+          </div>
+      
+          <div className="mt-12 flex justify-center font-bold">
+            <Button size='large' onClick={() => {
+                state.openLoginModal = true;
+              }}>
+              <span className="tracking-wider text-[18px] py-1">Connect</span>
+            </Button>
+          </div>
+        </div>
+      )}
       {apiConfigStore.apiConfig && (
         <>
           <div className="border border-white/25 flex flex-1 items-stretch rounded-12">
@@ -110,7 +129,7 @@ export default observer(() => {
             <div className="text-12 leading-none flex items-center tracking-widest justify-start cursor-pointer" onClick={openNetwork}><BsWifi className="mr-2 text-18 text-orange-500" />Network</div>
           </div>
           <div className="fixed bottom-2 w-[1000px] text-center text-12 text-white/50 tracking-wider">
-            This is just a GUI tool that will not store any of your fullnode data.
+            This GUI that will not store any of your fullnode data.
           </div>
         </>
       )}
