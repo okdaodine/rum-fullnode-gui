@@ -53,7 +53,7 @@ const Main = observer((props: IProps) => {
       <div className="pt-5">
         <TextField
           className="w-full"
-          placeholder="http://127.0.0.1:8002"
+          placeholder="http://127.0.0.1:8000"
           size="small"
           value={state.apiConfig.baseURL}
           onChange={(e) => { state.apiConfig.baseURL = e.target.value.trim(); }}
