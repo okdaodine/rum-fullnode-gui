@@ -26,7 +26,7 @@ const Main = observer((props: IProps) => {
     } catch (err) {
       console.log(err);
       snackbarStore.show({
-        message: 'Invalid json string',
+        message: 'Invalid json',
         type: 'error',
       });
       return;

@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "start-prod": "export NODE_ENV='production' && ./node_modules/.bin/pm2-runtime index.js",
+    "stop-prod": "./node_modules/.bin/pm2 stop 0"
+  },
+  "author": "raimonfuns",
+  "license": "ISC",
+  "dependencies": {
+    "pm2": "^5.2.0",
+    "koa": "^2.13.4",
+    "koa-static": "^5.0.0",
+    "koa-views": "^8.0.0"
+  }
+}

@@ -115,7 +115,7 @@ const Main = observer((props: IProps) => {
             <div className="pt-2">
               <TextField
                 className="w-full"
-                placeholder="encryption type"
+                placeholder="encryption type (public or private)"
                 size="small"
                 value={state.encryptionType}
                 onChange={(e) => { state.encryptionType = e.target.value.trim() }}
