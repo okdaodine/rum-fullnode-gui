@@ -95,7 +95,7 @@ export default observer(() => {
           </div>
       
           <div className="py-3 px-4 rounded-xl opacity-50 mt-5 text-14 flex items-center leading-none justify-center">
-            <AiOutlineInfoCircle className="mr-2 text-18" />This GUI that will not store any data of your fullnode.
+            <AiOutlineInfoCircle className="mr-2 text-18" />This GUI will not store any data of your fullnode.
           </div>
       
           <div className="mt-12 flex justify-center font-bold">
@@ -138,7 +138,7 @@ export default observer(() => {
             <div className="text-12 leading-none flex items-center tracking-widest justify-start cursor-pointer" onClick={openNetwork}><BsWifi className="mr-2 text-18 text-orange-500" />Network</div>
           </div>
           <div className="fixed bottom-2 w-[1000px] text-center text-12 text-white/50 tracking-wider">
-            This GUI that will not store any data of your fullnode.
+            This GUI will not store any data of your fullnode.
           </div>
         </>
       )}
