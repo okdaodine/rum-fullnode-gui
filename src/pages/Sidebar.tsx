@@ -33,7 +33,7 @@ export default observer((props: IProps) => {
       </div>
       <div className="pt-[62px]">
         <div className="border-t border-white/10" />
-        {props.groups.map(group => (
+        {props.groups.map((group, index) => (
           <div
             key={group.group_id}
             className={classNames("py-2 px-4 border-b border-white/10 cursor-pointer hover:bg-white/5 truncate", {
@@ -42,7 +42,7 @@ export default observer((props: IProps) => {
             onClick={() => {
               props.setActiveGroup(group);
             }}>
-            {group.group_name}
+            去中心微博 {index + 1}
           </div>
         ))}
       </div>
