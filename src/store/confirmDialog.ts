@@ -8,8 +8,8 @@ interface IShowOptions {
   contentClassName?: string;
 }
 
-const DEFAULT_CANCEL_TEXT = '取消';
-const DEFAULT_OK_TEXT = '确定';
+const DEFAULT_CANCEL_TEXT = 'Cancel';
+const DEFAULT_OK_TEXT = 'Ok';
 
 export function createConfirmDialogStore() {
   return {

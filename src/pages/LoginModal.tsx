@@ -15,7 +15,7 @@ interface IProps {
 
 
 const Main = observer((props: IProps) => {
-  const { apiConfigStore } = useStore();
+  const { apiConfigStore, confirmDialogStore } = useStore();
   const state = useLocalObservable(() => ({
     apiConfig: {
       baseURL: '',
@@ -24,6 +24,22 @@ const Main = observer((props: IProps) => {
   }));
 
   const submit = async (apiConfig: IApiConfig) => {
+    if (
+      window.origin.startsWith('https://') &&
+      apiConfig.baseURL.startsWith('http://') &&
+      !/localhost|127.0.0.1/.test(apiConfig.baseURL)
+    ) {
+      confirmDialogStore.show({
+        content: `Https website can not access http url. <br />Please use https url or use http website.`,
+        okText: 'Use http',
+        ok: async () => {
+          confirmDialogStore.hide();
+          await sleep(400);
+          window.location.href = 'http://http.gui.node.rumsystem.net/';
+        },
+      });
+      return;
+    }
     props.onClose();
     await sleep(150);
     apiConfigStore.setApiConfig(apiConfig);

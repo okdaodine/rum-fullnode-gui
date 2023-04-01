@@ -27,7 +27,6 @@ export default observer((props: IProps) => {
     if (!props.group) {
       return;
     }
-    console.log(`[here]`);
     (async () => {
       state.show = false;
       await sleep(10);
