@@ -42,7 +42,7 @@ export default observer((props: IProps) => {
             onClick={() => {
               props.setActiveGroup(group);
             }}>
-            去中心微博 {index + 1}
+            {group.group_name}
           </div>
         ))}
       </div>

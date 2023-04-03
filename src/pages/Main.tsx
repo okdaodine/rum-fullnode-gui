@@ -45,8 +45,11 @@ export default observer((props: IProps) => {
       content: 'Are you sure to leave ?',
       ok: async () => {
         try {
+          confirmDialogStore.setLoading(true);
           const client = RumFullNodeClient(apiConfigStore.apiConfig!);
-          client.Group.leave(props.group!.group_id);
+          await client.Group.leave(props.group!.group_id);
+          await sleep(1000);
+          await client.Group.clear(props.group!.group_id);
           props.removeGroup(props.group!);
           confirmDialogStore.hide();
           await sleep(400);

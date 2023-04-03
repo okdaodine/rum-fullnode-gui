@@ -13,6 +13,7 @@ import RumFullNodeClient from 'rum-fullnode-sdk';
 import openNetwork from './openNetwork';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { isMobile } from 'utils/env';
+import { AiOutlineGithub } from 'react-icons/ai';
 
 export default observer(() => {
   const { apiConfigStore, confirmDialogStore, pageLoadingStore } = useStore();
@@ -143,6 +144,15 @@ export default observer(() => {
         </>
       )}
       <LoginModal open={state.openLoginModal} onClose={() => state.openLoginModal = false} />
+
+      <div
+        className='fixed bottom-10 right-10 w-10 h-10 mx-auto rounded-full hidden md:flex items-center justify-center cursor-pointer border dark:border-white dark:md:border-opacity-10 dark:border-opacity-[0.05] border-gray-c4'
+        onClick={() => {
+          window.open('https://github.com/okdaodine/rum-fullnode-gui');
+        }}
+      >
+        <AiOutlineGithub className="text-20 dark:text-white dark:text-opacity-80 text-gray-af" />
+      </div>
     </div>
   )
 });
