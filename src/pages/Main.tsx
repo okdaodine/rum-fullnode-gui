@@ -70,7 +70,9 @@ export default observer((props: IProps) => {
   const copySeed = async () => {
     try {
       const client = RumFullNodeClient(apiConfigStore.apiConfig!);
-      const { seed } = await client.Group.getSeed(props.group!.group_id);
+      const { seed } = await client.Group.getSeed(props.group!.group_id, {
+        include_chain_url: 'true'
+      });
       copy(seed);
       snackbarStore.show({
         message: 'Copied',
@@ -88,7 +90,7 @@ export default observer((props: IProps) => {
     try {
       const client = RumFullNodeClient(apiConfigStore.apiConfig!);
       const { token } = await client.Token.create({
-        allow_groups: [props.group!.group_id],
+        group_id: props.group!.group_id,
         expires_at: '2100-01-01T00:00:00.675204+00:00',
         name: `${Date.now()}`,
         role: 'node',
@@ -146,7 +148,7 @@ export default observer((props: IProps) => {
               <div className="text-orange-500/90 mr-1">List</div>
             </div>
             {isOwner && (
-              <div className="mt-5 w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90 hidden" onClick={() => createNodeToken()}>
+              <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => createNodeToken()}>
                 <div className="text-14 tracking-wider">Node Token</div>
                 <div className="text-orange-500/90 mr-1">Create</div>
               </div>

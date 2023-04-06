@@ -86,7 +86,7 @@ const Main = observer((props: IProps) => {
               return (
                 <div
                   key={`${apiConfig.baseURL}${apiConfig.jwt}`}
-                  className="mt-4 border border-white/20 px-4 py-3 flex items-center justify-between rounded-10 cursor-pointer text-left relative group"
+                  className="mt-4 border border-white/20 px-3 py-3 flex items-center justify-between rounded-10 cursor-pointer text-left relative group"
                   onClick={() => {
                     submit(apiConfig);
                   }}
