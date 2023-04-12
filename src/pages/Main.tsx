@@ -9,6 +9,7 @@ import sleep from 'utils/sleep';
 import openGroupInfo from './openGroupInfo';
 import listContents from './listContents';
 import CreateTrxModal from './CreateTrxModal';
+import GetTrxModal from './GetTrxModal';
 import Fade from '@material-ui/core/Fade';
 
 interface IProps {
@@ -20,7 +21,8 @@ export default observer((props: IProps) => {
   const { apiConfigStore, snackbarStore, confirmDialogStore } = useStore();
   const state = useLocalObservable(() => ({
     show: false,
-    openCreateTrxModal: false
+    openCreateTrxModal: false,
+    openGetTrxModal: false
   }));
 
   React.useEffect(() => {
@@ -147,6 +149,10 @@ export default observer((props: IProps) => {
               <div className="text-14 tracking-wider">Last 10 trxs</div>
               <div className="text-orange-500/90 mr-1">List</div>
             </div>
+            <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => { state.openGetTrxModal = true; }}>
+              <div className="text-14 tracking-wider">Trx</div>
+              <div className="text-orange-500/90 mr-1">Get</div>
+            </div>
             {isOwner && (
               <div className="mt-5 flex w-[450px] mx-auto py-2 px-6 cursor-pointer items-center justify-between bg-white/5 rounded-12 text-white/90" onClick={() => createNodeToken()}>
                 <div className="text-14 tracking-wider">Node Token</div>
@@ -161,6 +167,12 @@ export default observer((props: IProps) => {
         groupId={props.group.group_id}
         open={state.openCreateTrxModal}
         onClose={() => state.openCreateTrxModal = false}
+      />
+
+      <GetTrxModal
+        group={props.group}
+        open={state.openGetTrxModal}
+        onClose={() => state.openGetTrxModal = false}
       />
     </div>
   )

@@ -64,7 +64,7 @@ const Main = observer((props: IProps) => {
       <div className="pt-2">
         <TextField
           className="w-full"
-          placeholder={`Chain token (optional)`}
+          placeholder={`Chain token (Optional)`}
           size="small"
           value={state.apiConfig.jwt}
           onChange={(e) => { state.apiConfig.jwt = e.target.value.trim(); }}

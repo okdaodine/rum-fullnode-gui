@@ -16,6 +16,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "5.0.1",
     "rum-fullnode-sdk": "^2.0.9",
+    "rum-sdk-browser": "^2.0.2",
     "store2": "^2.14.2",
     "typescript": "^4.7.4"
   },
